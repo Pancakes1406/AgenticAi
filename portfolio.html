@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh Darroch | Agentic AI Lab</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --dark: #1a0010;
+    --crimson: #cd003b;
+    --crimson-light: #ff1f5a;
+    --crimson-dim: rgba(205,0,59,0.12);
+    --white: #ffffff;
+    --off-white: #faf7f5;
+    --muted: #8a7a80;
+    --card-bg: #ffffff;
+    --border: rgba(205,0,59,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--dark);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--dark);
+    color: var(--white);
+    padding: 80px 40px 70px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(205,0,59,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--crimson), transparent);
+  }
+
+  .hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--crimson-light);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero-label::before {
+    content: '';
+    display: block;
+    width: 30px; height: 1px;
+    background: var(--crimson);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  h1 span { color: var(--crimson-light); }
+
+  .hero-subtitle {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    margin-bottom: 32px;
+  }
+
+  .exec-summary {
+    background: rgba(255,255,255,0.05);
+    border-left: 3px solid var(--crimson);
+    padding: 20px 24px;
+    border-radius: 0 8px 8px 0;
+    font-size: 15px;
+    color: rgba(255,255,255,0.82);
+    max-width: 720px;
+    line-height: 1.8;
+  }
+
+  /* MAIN */
+  main { max-width: 900px; margin: 0 auto; padding: 60px 24px; }
+
+  /* SECTION CARDS */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 40px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+
+  .card:hover { box-shadow: 0 8px 40px rgba(205,0,59,0.08); }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--crimson);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  .section-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--crimson);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--crimson);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 24px 0 10px;
+    font-size: 12px;
+  }
+
+  p { margin-bottom: 14px; color: #2d1a22; }
+  p:last-child { margin-bottom: 0; }
+
+  /* WORKFLOW DIAGRAM */
+  .workflow {
+    background: var(--dark);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .wf-node {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(205,0,59,0.4);
+    border-radius: 8px;
+    padding: 10px 16px;
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .wf-node.trigger { border-color: #00c896; color: #00c896; }
+  .wf-node.brain { border-color: var(--crimson-light); color: var(--crimson-light); }
+  .wf-node.tool { border-color: rgba(255,255,255,0.3); font-size: 11px; }
+
+  .wf-arrow { color: rgba(255,255,255,0.3); font-size: 18px; }
+
+  .wf-tools {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* CODE BLOCKS */
+  pre {
+    background: #0f0008;
+    color: #f0d0d8;
+    border-radius: 8px;
+    padding: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 16px 0;
+    border: 1px solid rgba(205,0,59,0.2);
+  }
+
+  code {
+    font-family: 'DM Mono', monospace;
+    background: var(--crimson-dim);
+    color: var(--crimson);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+
+  /* APPEAL LETTER */
+  .letter {
+    background: #fffdf9;
+    border: 1px solid #e8ddd5;
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #1a0010;
+  }
+
+  .letter-header {
+    border-bottom: 2px solid var(--dark);
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+  }
+
+  .letter-header strong {
+    display: block;
+    font-size: 16px;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 6px;
+  }
+
+  .letter-header span { font-size: 12px; color: var(--muted); }
+
+  /* SCREENSHOT PLACEHOLDER */
+  .screenshot {
+    background: linear-gradient(135deg, #0f0008 0%, #1a0010 100%);
+    border: 1px solid rgba(205,0,59,0.3);
+    border-radius: 10px;
+    padding: 32px;
+    margin: 16px 0;
+    text-align: center;
+  }
+
+  .screenshot img {
+    max-width: 100%;
+    border-radius: 6px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .screenshot-caption {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 12px;
+    letter-spacing: 0.08em;
+  }
+
+  /* TAKEAWAYS */
+  .takeaways {
+    background: var(--dark);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 40px;
+    margin-bottom: 32px;
+  }
+
+  .takeaways h2 { color: var(--white); margin-bottom: 24px; }
+
+  .takeaway-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .takeaway-item {
+    border-left: 3px solid var(--crimson);
+    padding-left: 16px;
+  }
+
+  .takeaway-item strong {
+    display: block;
+    font-size: 13px;
+    color: var(--crimson-light);
+    margin-bottom: 6px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .takeaway-item p { font-size: 14px; color: rgba(255,255,255,0.75); margin: 0; }
+
+  /* GOVERNANCE TABLE */
+  .gov-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .gov-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 16px;
+    padding: 16px;
+    background: var(--off-white);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  .gov-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--crimson);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    padding-top: 2px;
+  }
+
+  .gov-text { font-size: 14px; color: #2d1a22; line-height: 1.6; }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 40px 24px;
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  footer a { color: var(--crimson-light); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--crimson), transparent);
+    margin: 40px 0;
+    opacity: 0.3;
+  }
+
+  /* TAGS */
+  .tag {
+    display: inline-block;
+    background: var(--crimson-dim);
+    color: var(--crimson);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .tags { margin: 16px 0; }
+
+  @media (max-width: 600px) {
+    .hero { padding: 50px 20px 50px; }
+    .card { padding: 24px 20px; }
+    .gov-row { grid-template-columns: 1fr; }
+    .wf-arrow { display: none; }
+    .workflow { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">MIS 432 · AI in Business · Western Washington University</div>
+    <h1>Josh Darroch<br><span>Agentic AI Lab</span></h1>
+    <p class="hero-subtitle">From Healthcare Insurance Advocacy to Personal AI Agents</p>
+    <div class="exec-summary">
+      In this lab I built two working AI agents in n8n: an AI Insurance Advocate that reads denial letters, pulls patient charts, checks insurance policy language, and drafts appeal letters autonomously, and a personal Concert Weekend Agent that cross-references events, my schedule, and my budget to recommend the best option. Testing these agents revealed that the difference between a capable AI and a reliable one isn't intelligence, it's access, guardrails, and human oversight design. What surprised me most was how a single line in a system prompt, telling the agent not to hallucinate, was the difference between a trustworthy tool and a liability.
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- SECTION 1 -->
+  <div class="card">
+    <div class="section-number">Section 01</div>
+    <h2>What is Agentic AI?</h2>
+    <h3>The Three Levels</h3>
+    <p>Agentic AI operates on a spectrum. A <strong>Level 1 agent</strong> answers questions from memory with no external tools. A <strong>Level 2 agent</strong> can call tools and take actions but stops at every decision point to wait for human input. A <strong>Level 3 agent</strong> reasons across multiple steps autonomously, deciding which tools to call and in what order, and only surfaces a result when it's done.</p>
+    <h3>What I Learned from Testing</h3>
+    <p>Every Sunday I try to "win the week" by checking assignments, planning meals, and figuring out gym days. A Level 2 agent would be like a helpful roommate who keeps interrupting to confirm things. It can pull info and build lists, but every real decision sends it back to me waiting for an answer.</p>
+    <p>A Level 3 agent just handles it. Sees I have an exam Thursday, plans meals around that, adjusts the grocery list based on what I already have, blocks gym time intelligently, and sends me a summary when it's done.</p>
+    <p>But I'd still want to stay in the loop on a few things: messaging anyone on my behalf, anything touching my money, and my own energy levels. No algorithm catches when I'm already burnt out. The sweet spot is the agent doing all the thinking, laying out a plan, and letting me hit approve before anything gets locked in.</p>
+    <div class="tags">
+      <span class="tag">Level 1 Agent</span>
+      <span class="tag">Level 2 Agent</span>
+      <span class="tag">Level 3 Agent</span>
+      <span class="tag">Human in the Loop</span>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="card">
+    <div class="section-number">Section 02</div>
+    <h2>Building the AI Insurance Advocate</h2>
+    <h3>Workflow Architecture</h3>
+    <div class="workflow">
+      <div class="wf-node trigger">Chat Trigger<br><small>Denial letter enters</small></div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-node brain">AI Agent<br><small>Claude Sonnet 4.6</small></div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-tools">
+        <div class="wf-node tool">Patient Chart Tool</div>
+        <div class="wf-node tool">Policy Lookup Tool</div>
+      </div>
+    </div>
+    <p>The agent uses a <strong>Chat Trigger</strong> to receive denial letters, passes them to an <strong>AI Agent node</strong> powered by Claude Sonnet 4.6, which decides autonomously which tools to call and in what order. The <strong>Patient Chart tool</strong> returns visit history, PT notes, and exam findings. The <strong>Policy Lookup tool</strong> returns the exact BlueCross HIP-4420 policy language.</p>
+
+    <h3>System Prompt</h3>
+    <pre>You are an insurance appeal specialist working for a hospital. Your job is to help
+the hospital challenge insurance claim denials that you believe were wrongly denied,
+so that patients get the care they need.
+
+When you receive a denial letter, follow this process:
+1. Read the denial carefully and identify the reason for denial
+2. Use the Patient Chart tool to pull the patient's medical records
+3. Use the Policy Lookup tool to find the exact policy criteria for the appeal
+4. Draft a professional appeal letter with specific evidence from the chart and policy
+
+IMPORTANT: Only use facts from the patient's chart and insurance policy. Never make up
+dates, clinical findings, or policy language. If you don't have enough information,
+say so. Accuracy matters more than persuasiveness.</pre>
+
+    <h3>What the Agent Did</h3>
+    <p>It pretty much did exactly what I expected. It read the denial letter, pulled the patient chart, checked the policy, then drafted the appeal. What surprised me was how it didn't need to be told which tool to use when. It figured out on its own that it needed the chart first to gather the facts, then the policy to match those facts against the criteria, building its argument the same way a human advocate would.</p>
+    <p>The only thing I'd flag is that there's no checkpoint where a real human reviews the appeal before it goes out. The logic was sound, but in an actual hospital setting you'd want someone to sign off before that letter hits an insurance company's desk.</p>
+
+    <h3>Appeal Letter — Maria Santos</h3>
+    <div class="letter">
+      <div class="letter-header">
+        <strong>Appeal Letter: Maria Santos — MRI Right Knee (CPT 73721)</strong>
+        <span>Re: Claim CLM-2026-04-77829 · BlueCross Regional Health Plan · Policy HIP-4420</span>
+      </div>
+      <p>To Whom It May Concern,</p>
+      <p>We are writing to formally appeal the denial of the MRI right knee (CPT 73721) for patient Maria Santos (DOB 03/15/1968, ID: BCR-2024-88421). The denial cites insufficient documentation of conservative treatment for a minimum of 6 weeks per Policy HIP-4420, Section 3.2. We respectfully disagree and provide the following evidence.</p>
+      <p><strong>Conservative Treatment Timeline:</strong> Ms. Santos was seen on 02/12/2026 by Dr. Amara Okafor for right knee pain worsening over 8 weeks following a fall on ice in December 2025. She was prescribed Naproxen 500mg BID and referred to physical therapy 2x/week for 6 weeks. PT intake occurred 02/19/2026 at Valley Physical Therapy. By 03/05/2026 (Session 5), pain remained at 7/10 with limited flexion. PT discharge occurred 03/26/2026 (Session 10) with less than 10% ROM improvement and pain at 6-7/10. The therapist noted advanced imaging was recommended. Total conservative treatment: 5+ weeks of PT plus anti-inflammatory medication, spanning February 12 through March 26, 2026 — over 6 weeks from initial treatment plan to imaging order.</p>
+      <p><strong>Policy Criteria Met:</strong> Per Section 3.2, the MRI is medically necessary when: (a) minimum 6 weeks conservative treatment — met, (b) conservative treatment failed to produce meaningful improvement — met (less than 10% ROM improvement, pain 6-7/10 at discharge), (c) physical exam suggests internal derangement — met (positive McMurray test, medial joint line tenderness documented 04/02/2026 by Dr. Okafor).</p>
+      <p>We respectfully request reconsideration of this claim. All required documentation per Section 3.2.1 is enclosed.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="card">
+    <div class="section-number">Section 03</div>
+    <h2>Breaking the Advocate</h2>
+    <p>When the Patient Chart tool was deactivated, the agent didn't hallucinate. It fell back to asking for the information directly, exactly what the system prompt told it to do. That single constraint, "only use facts from the tools," dropped the agent from Level 3 to Level 2 instantly.</p>
+    <p>Two lessons became clear. First, the system prompt matters more than it looks. Without the no-hallucination guardrail, the agent might have fabricated clinical evidence that looked professional but was completely wrong. Second, tools are what make an agent an agent. Same AI, same brain. With tools it's Level 3. Without them it's Level 2. The intelligence didn't change. The access did.</p>
+
+    <h3>Why This Matters Beyond Healthcare</h3>
+    <p>Take legal defense. If an agent without a no-hallucination guardrail is deployed, it could fabricate case citations or statutes that sound legitimate but don't exist. The attorney misses it, the fake evidence goes into a brief, and the client's case collapses, potentially costing them their freedom. This already happened. Lawyers have been sanctioned for submitting AI-generated briefs full of fake citations that no judge could locate. That guardrail felt like one small line in a system prompt, but that line is the difference between an agent that says "I don't have enough information" and one that confidently makes something up. In law, that gap means someone goes to prison.</p>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="card">
+    <div class="section-number">Section 04</div>
+    <h2>Second Patient — James Whitfield</h2>
+    <h3>Auditing the Denial</h3>
+    <p>The denial stated James had no documented cardiac symptoms within 30 days of his stress test. The chart told a different story. His 03/18 visit, just 7 days before the 03/25 stress test, documented chest tightness climbing stairs over 2 to 3 weeks, episodes resolving with rest, BP 142/90, and Dr. Mehta's clinical assessment of atypical chest pain with significant cardiac risk factors including family history of MI, elevated LDL, and hypertension in a 72-year-old. That visit falls well within 30 days and directly contradicts the denial's stated reason.</p>
+    <p>The AI Insurance Advocate found the exact same evidence, pulling the chart, identifying the visit, and building the appeal around that specific date and symptom documentation without missing or misreading the timeline.</p>
+
+    <h3>Appeal Letter — James Whitfield</h3>
+    <div class="letter">
+      <div class="letter-header">
+        <strong>Appeal Letter: James Whitfield — Cardiac Stress Test (CPT 93015)</strong>
+        <span>Re: Claim CLM-2026-04-22314 · BlueCross Regional Health Plan · Policy HIP-5510</span>
+      </div>
+      <p>To Whom It May Concern,</p>
+      <p>We are writing to formally appeal the denial of the cardiac stress test (CPT 93015) for patient James Whitfield (DOB 07/22/1953, ID: BCR-2024-31097). The denial cites no documented cardiac symptoms within 30 days of the test per Policy HIP-5510, Section 2.1. The patient's chart directly contradicts this finding.</p>
+      <p><strong>Documented Symptoms Within 30 Days:</strong> On 03/18/2026, just 7 days before the 03/25/2026 stress test, Dr. Priya Mehta documented chest tightness climbing stairs occurring over the past 2 to 3 weeks, with episodes lasting 2 to 3 minutes resolving with rest. Blood pressure was recorded at 142/90. The clinical assessment explicitly noted atypical chest pain alongside significant cardiac risk factors: family history of MI (father at 64, brother bypass at 58), elevated LDL of 155, hypertension, and age over 70. The stress test was ordered that same day to rule out ischemic heart disease.</p>
+      <p>The 03/18/2026 visit clearly falls within 30 days of the 03/25/2026 test date, and the documented symptoms meet the criteria for medical necessity. We respectfully request full reconsideration of this claim.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="card">
+    <div class="section-number">Section 05</div>
+    <h2>Auditing the Output</h2>
+    <p>The appeal letter for Maria Santos was accurate across every claim checked. Dates, pain scores, ROM improvement, exam findings, and policy references all matched the source documents exactly. Nothing was added that wasn't there.</p>
+    <p>But at 500 denials a month, a line-by-line audit isn't realistic. That's a full-time job on its own.</p>
+    <p>The better approach is a tiered review system. The agent handles all 500, a human spot-checks 10 to 15% randomly, and anything above a certain dollar threshold gets mandatory review. Confidence flagging built into the agent routes uncertain cases to a human before anything goes out. The goal isn't zero human involvement. It's human involvement in the right places.</p>
+    <p>The value of an IS professional isn't running the prompt. It's being able to say: "the agent pulled data from these two sources, cross-referenced the denial reason against the policy criteria, and constructed the argument from specific chart entries, and I verified each claim against the source."</p>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="card">
+    <div class="section-number">Section 06</div>
+    <h2>AI Governance Framework</h2>
+    <div class="gov-grid">
+      <div class="gov-row">
+        <div class="gov-label">Purpose &amp; Scope</div>
+        <div class="gov-text">The agent is in scope for drafting appeal letters based on chart and policy data only. It should never submit appeals without human sign-off, contact patients directly, or make any clinical recommendations.</div>
+      </div>
+      <div class="gov-row">
+        <div class="gov-label">Data Access &amp; Privacy</div>
+        <div class="gov-text">The agent only needs visit notes, exam findings, and treatment history relevant to the denied claim. Psychiatric records, unrelated diagnoses, and anything outside the scope of the denial should be inaccessible. No patient data should be retained after the letter is generated.</div>
+      </div>
+      <div class="gov-row">
+        <div class="gov-label">Human Oversight</div>
+        <div class="gov-text">Low-dollar, straightforward denials with clean chart matches could reasonably go through lighter review. High-dollar claims, anything with conflicting dates, or cases the agent flags as uncertain should require full human review before submission.</div>
+      </div>
+      <div class="gov-row">
+        <div class="gov-label">Auditing &amp; Accountability</div>
+        <div class="gov-text">Track accuracy rate, hallucination rate, and appeal success rate monthly using random spot checks. If a letter with a factual error gets submitted, accountability falls on the human reviewer, not the agent, which is exactly why the reviewer role cannot be treated as a rubber stamp.</div>
+      </div>
+      <div class="gov-row">
+        <div class="gov-label">Monitoring &amp; Sunset</div>
+        <div class="gov-text">A drop in appeal success rate or a spike in flagged errors would be the clearest signal something is wrong. If either metric trends negatively over two consecutive months, the system goes under review before processing any new denials.</div>
+      </div>
+    </div>
+    <h3>Hardest Layer at Scale</h3>
+    <p>Human Oversight Design. Every other layer has a relatively clear technical solution. Oversight design requires judgment calls about which cases are low-risk enough to move faster, and getting that wrong means either bottlenecking the whole system or letting bad letters go out. That balance is genuinely difficult and changes as the agent evolves.</p>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="card">
+    <div class="section-number">Section 07</div>
+    <h2>Should We Be Doing This?</h2>
+    <p>The concern that matters most is errors at scale. A 2% error rate sounds acceptable until you do the math. At 1,000 denials a month that is 20 patients receiving appeals built on wrong information, people who already got denied care and trusted the system to fight for them. A professional-looking letter with a wrong date or misquoted finding isn't better than no letter. It's worse, because it looks credible enough that nobody catches it.</p>
+    <p><strong>The specific guardrail:</strong> every letter gets an auto-generated confidence score based on how cleanly the agent matched chart data and policy language to the denial. Anything below 90% cannot be submitted without explicit human approval. Above that threshold, 15% get spot-checked randomly. Human attention goes where the risk is highest, not spread thin across everything.</p>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="card">
+    <div class="section-number">Section 08</div>
+    <h2>My Personal Agent — Concert Weekend Planner</h2>
+    <h3>Workflow Architecture</h3>
+    <div class="workflow">
+      <div class="wf-node trigger">Chat Trigger<br><small>Weekend request enters</small></div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-node brain">AI Agent<br><small>Claude Sonnet 4.6</small></div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-tools">
+        <div class="wf-node tool">Events This Weekend</div>
+        <div class="wf-node tool">Weekend Schedule</div>
+        <div class="wf-node tool">Budget</div>
+      </div>
+    </div>
+    <p>Built using the same architecture as the Insurance Advocate: Chat Trigger → AI Agent (Claude Sonnet 4.6) → three Code Tools. The <strong>Events tool</strong> returns concerts and events in the Seattle/Bellingham area. The <strong>Schedule tool</strong> returns my weekend availability. The <strong>Budget tool</strong> returns my remaining entertainment and transportation budget for the month.</p>
+
+    <h3>System Prompt</h3>
+    <pre>You are a personal event planning assistant. Your goal is to recommend the best
+concert or event for me to attend this weekend based on my schedule, budget,
+and interests.
+
+Use the Events tool to see what is happening, the Calendar tool to check when
+I am free, and the Budget tool to check what I can afford. Recommend the best
+option and explain why it fits my schedule and budget. If nothing works, say so.
+
+Only use facts from the tools. Do not make up events, times, or prices.</pre>
+
+    <h3>Would I Trust It Unsupervised?</h3>
+    <p>Not yet. Before trusting it, I'd want to run it for a few weekends side by side with my own decisions, checking whether its recommendations matched what I would have chosen and why. If it gets the logic right consistently, right budget math, no scheduling conflicts, reasonable tradeoffs, then maybe after 4 to 5 weeks I'd let it run with just a quick review before acting on it.</p>
+    <p>That's a low-stakes version of the same question hospitals face with something like Epic's Penny. The difference is Penny makes recommendations that touch patient care, so the trust bar is much higher and the proving period is much longer. Hospitals want clinical validation studies, months of monitored output, and sign-off from both IT and medical staff before reducing oversight. I'm just trying to see a concert.</p>
+    <p>The underlying logic is the same. You don't trust an agent because it looks right once. You trust it because it has been right consistently, across enough varied situations, that the cost of reviewing every output starts to outweigh the risk of missing an error.</p>
+  </div>
+
+  <!-- KEY TAKEAWAYS -->
+  <div class="takeaways">
+    <div class="section-number" style="color: var(--crimson-light); margin-bottom: 8px;">Key Takeaways</div>
+    <h2>What I Actually Learned</h2>
+    <div class="takeaway-grid">
+      <div class="takeaway-item">
+        <strong>Tools make the agent</strong>
+        <p>Same AI, same brain. With tools it's Level 3. Without them it's Level 2. The intelligence didn't change. The access did.</p>
+      </div>
+      <div class="takeaway-item">
+        <strong>One line changes everything</strong>
+        <p>A single system prompt instruction not to hallucinate was the difference between a trustworthy tool and a liability at scale.</p>
+      </div>
+      <div class="takeaway-item">
+        <strong>Looking right isn't being right</strong>
+        <p>Generative AI produces things that look professional and confident. Auditing is not optional, it's the job.</p>
+      </div>
+      <div class="takeaway-item">
+        <strong>The domain changes. The questions don't.</strong>
+        <p>Governance, oversight, error rates, and trust-building apply to any agentic system, healthcare or otherwise.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>Josh Darroch &nbsp;|&nbsp; <a href="mailto:darrochj@wwu.edu">darrochj@wwu.edu</a> &nbsp;|&nbsp; <a href="https://linkedin.com/in/joshdarroch" target="_blank">linkedin.com/in/joshdarroch</a></p>
+  <p style="margin-top: 8px; font-size: 11px; opacity: 0.4;">MIS 432 · AI in Business · Western Washington University · 2026</p>
+</footer>
+
+</body>
+</html>
